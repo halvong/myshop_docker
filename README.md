@@ -36,7 +36,7 @@ docker-compose exec web python manage.py createsuperuser
 7. source ~/venv3/bin/activate
 8. cd mysite; python manage.py startapp [app name]
 9. python manage.py migrate 
-10. move/create Dockerfile, docker-compose.yml, README.md, requirements.txt to root directory
+10. move/create Dockerfile, docker-compose.yml, README.md, requirements.txt to root directory, keep SQL lite temporarily
 11. (optional) 
     docker build -t <image_name> . 
             or
@@ -46,16 +46,33 @@ docker-compose exec web python manage.py createsuperuser
     docker tag [image id] [image name:1.0]
 12. (optional) 
 i   docker run -p 8000:8000 [image name]
-13. (optional) 
-    "run" database container to create database
-16. docker-compose up --build
-17. docker-compose exec web python manage.py makemigrations 
+13. (creates database container to create database)
+    docker-compose up -d database
+        because database "shop" needs to exits first 
+14. settings.py 
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'NAME': 'shop',
+                'USER': 'postgres',
+                'PASSWORD': 'postgres',
+                'HOST': 'database',
+                'PORT': 5432,
+            }
+        }
+15. docker-compose run --rm database psql -U postgres -h database
+    password: postgres   
+16. create database shop;
+17. docker-compose stop
+18. deletes SQL lite (if exists)        
+19. docker-compose up web or docker-compose up --build
+20. docker-compose exec web python manage.py makemigrations 
         Migrations for 'shop':
           shop/migrations/0001_initial.py
             - Create model Category
             - Create model Product
             - Alter index_together for product (1 constraint(s))
-18. docker-compose exec web python manage.py migrate
+21. docker-compose exec web python manage.py migrate
         Running migrations:
           Applying contenttypes.0001_initial... OK
           Applying auth.0001_initial... OK
@@ -73,9 +90,10 @@ i   docker run -p 8000:8000 [image name]
           Applying auth.0009_alter_user_last_name_max_length... OK
           Applying sessions.0001_initial... OK
           Applying shop.0001_initial... OK
-
-19. docker-compose exec database psql -U postgres -h database
-
+22. docker-compose exec database psql -U postgres -h database
+                            or
+    docker-compose run --rm database psql -U postgres -h database
+    
 #notes docker steps 
 1. docker-compose up -d database 
    docker-compose run --rm database psql -U postgres -h database
