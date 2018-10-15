@@ -1,0 +1,17 @@
+Django==2.1.2
+Markdown==2.6.11
+psycopg2-binary
+Pillow
+gunicorn
+django-debug-toolbar
+django-extensions
+django-pdb
+docutils
+Jinja2
+jinja2-django-tags
+MarkupSafe
+pytz
+raven
+django-taggit
+social-auth-app-django
+sorl-thumbnail==12.4.1

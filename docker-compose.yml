@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  database:
+    image: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports: 
+      - "5432"
+    environment:
+      POSTGRES_DATABASE: shop
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    #command: >  
+    #  gunicorn -b 0.0.0.0:8000
+    #    --access-logfile -
+    #    --reload 
+    #    wisdompets.wsgi:application
+    volumes:
+      - .:/usr/src/app
+    ports: 
+      - "8000:8000"
+    depends_on:
+      - database
+volumes:
+  db-data:
