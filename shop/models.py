@@ -29,4 +29,4 @@ class Product(models.Model):
         index_together = (('id', 'slug'),)
 
     def __str__(self):
-        return "name: ",self.name,", slug:",self.slug
+        return 'name: {}, slug: {}'.format(self.name, self.slug)

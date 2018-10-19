@@ -1,6 +1,6 @@
 Packtpub Django2
-Oct 15, 2018, MOn
-pg229
+Oct 19, 2018, Fri
+pg232
 
 http://localhost:8000/account/login/
 http://c19e1fb6.ngrok.io/account/login/
@@ -9,12 +9,14 @@ http://c19e1fb6.ngrok.io/account/login/
 cd /home/hal/Documents/softwares/pycharm/workspace/myshop_docker
 
 #database
+sudo systemctl start postgresql
+su - tom
 psql -d myshop
 
 #Super User
 username: hal
 email: halvong@yahoo.com
-password: wesleyave
+password: hal 
 
 #ngrok
 ./ngrok http 8000
@@ -93,6 +95,9 @@ i   docker run -p 8000:8000 [image name]
 22. docker-compose exec database psql -U postgres -h database
                             or
     docker-compose run --rm database psql -U postgres -h database
+23. docker-compose exec web python manage.py createsuperuser
+24.
+
     
 #notes docker steps 
 1. docker-compose up -d database 
